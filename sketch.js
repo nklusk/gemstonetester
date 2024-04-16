@@ -21,7 +21,6 @@ let thirdPointaY;
 let fourthPointaX;
 let fouthPointaY;
 
-
 // RECTANGLE B GLOBAL VARIABLES
 let hypotenuseB;
 let bLength;
@@ -64,8 +63,6 @@ let thirdPointdY;
 let fourthPointdX;
 let fourthPointdY;
 
-
-
 // MIDSECTION GLOBAL VARIABLES
 let shorterMiddleGap;
 let leftYaverage;
@@ -84,6 +81,33 @@ let leftRectcX;
 let leftRectcY;
 let leftRectdX;
 let leftRectdY;
+
+
+let rightRectaX;
+let rightRectaY;
+let rightRectbX;
+let rightRectbY;
+let rightRectcX;
+let rightRectcY;
+let rightRectdX;
+let rightRectdY;
+
+//WARP HOLE PLACEMENT GLOBAL VARIABLES
+let holesAmaxCount;
+let holesA;
+let holesAstartX;
+let holesAstartY;
+
+let holesDstartX;
+let holesDstartY;
+
+let holesBmaxCount;
+let holesB;
+let holesBstartX;
+let holesBstartY;
+
+let holesCstartX;
+let holesCstartY;
 
 function setup() {
 createCanvas(1200, 1200);
@@ -202,12 +226,41 @@ rightRectcX = rightmostX - 50 -rightRectAngleFactorX
 rightRectcY = rightYaverage-(midsectionRectLength/2) +rightRectAngleFactorY
 rightRectdX = rightmostX - 50 +rightRectAngleFactorX
 rightRectdY = rightYaverage+(midsectionRectLength/2) +rightRectAngleFactorY
+
+
+// WARP HOLE CALCULATIONS
+holesAmaxCount = (max(firstPointaX, secondPointaX)-min(fourthPointaX, thirdPointaX)) / 20
+
+holesA = round(random(5, holesAmaxCount))
+holesAmaxDistX = 11
+holesAmaxDistY = ((thirdPointaY-firstPointaY)/(firstPointaX-thirdPointaX))*11
+
+holesAstartX = min(thirdPointaX, fourthPointaX) +(thirdPointaX-fourthPointaX)/2
+holesAstartY = thirdPointaY-(thirdPointaY-fourthPointaY)/2
+
+holesDstartX = min(thirdPointdX, fourthPointdX) +(fourthPointdX-thirdPointdX)/2
+holesDstartY = fourthPointdY-(fourthPointdY-thirdPointdY)/2
+holesDmaxDistY = ((thirdPointdY-firstPointdY)/(firstPointdX-thirdPointdX))*11
+
+holesBmaxCount = (max(thirdPointbX, fourthPointbX)-min(firstPointbX, secondPointbX)) / 20
+holesB = round(random(5, holesBmaxCount))
+holesBmaxDistX = 11
+holesBmaxDistY = ((thirdPointbY-firstPointbY)/(thirdPointbX-firstPointbX))*11
+
+holesBstartX = min(firstPointbX, secondPointbX) +(secondPointbX-firstPointbX)/2
+holesBstartY = firstPointbY-(firstPointbY-secondPointbY)/2
+
+holesCstartX = min(thirdPointcX, fourthPointcX) +(thirdPointcX-fourthPointcX)/2
+holesCstartY = fourthPointcY-(fourthPointcY-thirdPointcY)/2
+holesCmaxDistY = ((firstPointcY-thirdPointcY)/(firstPointcX-thirdPointcX))*11
 }
 
 function draw() {
-background(220);
+// background(220);
 
-stroke(3);
+stroke(255, 0, 0);
+strokeWeight(1)
+noFill()
 
 // tester/non-cut lines:
 // line(rightRectcX, rightRectcY, rightRectaX, rightRectaY)
@@ -245,6 +298,58 @@ line(rightRectcX, rightRectcY, rightRectdX, rightRectdY)
 line(thirdPointdX, thirdPointdY, rightRectdX, rightRectdY)
 line(fourthPointdX, fourthPointdY, rightRectbX, rightRectbY)
 
+
+
+// WARP HOLE LOOPS
+  
+// RECTANGLE A
+let holeaX = holesAstartX
+let holeaY = holesAstartY
+
+for (let i = 0; i < holesA; i++){
+  // addValueX += random(11, holesAmaxDistX)
+  // addValueY += random(11, holesAmaxDistY)
+  holeaX += holesAmaxDistX +random(0, 2)
+  holeaY -= holesAmaxDistY
+  circle(holeaX, holeaY, 7)
+}
+
+circle(holesDstartX, holesDstartY, 7)
+console.log(holesDstartX, holesDstartY)
+
+// RECTANGLE D
+let holedX = holesDstartX
+let holedY = holesDstartY
+for (let i = 0; i < holesA-1; i++){
+  // addValueX += random(11, holesAmaxDistX)
+  // addValueY += random(11, holesAmaxDistY)
+  holedX -= holesAmaxDistX +random(0, 2)
+  holedY += holesDmaxDistY
+  circle(holedX, holedY, 7)
+}
+
+// RECTANGLE B
+let holebX = holesBstartX
+let holebY = holesBstartY
+for (let i = 0; i < holesB; i++){
+  // addValueX += random(11, holesAmaxDistX)
+  // addValueY += random(11, holesAmaxDistY)
+  holebX += holesBmaxDistX +random(0, 2)
+  holebY += holesBmaxDistY
+  circle(holebX, holebY, 7)
+}
+
+// RECTANGLE C
+let holecX = holesCstartX
+let holecY = holesCstartY
+for (let i = 0; i < holesB; i++){
+  // addValueX += random(11, holesAmaxDistX)
+  // addValueY += random(11, holesAmaxDistY)
+  holecX += holesBmaxDistX +random(0, 2)
+  holecY += holesCmaxDistY
+  circle(holecX, holecY, 7)
+}
+
 //REGISTRATION LINES
 stroke('orange');
 noFill();
@@ -252,6 +357,8 @@ rect(100, 100, 1000, 1000);
 line(100, 300, 1100, 300);
 line(100, 900, 1100, 900);
 point(600,300)
-circle(leftmostX, leftYaverage, 10);
-circle(rightmostX, rightYaverage, 10)
+//circle(leftmostX, leftYaverage, 7);
+// circle(rightmostX, rightYaverage, 7)
+
+noLoop();
 }
